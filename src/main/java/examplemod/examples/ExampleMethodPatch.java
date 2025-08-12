@@ -8,6 +8,9 @@ import necesse.level.maps.Level;
 import net.bytebuddy.asm.Advice;
 
 /**
+ * Kotlin has some restrictions that make some features of bytebuddy not usable,
+ * so I usually make short patch classes in java
+ * <p>
  * The game uses Byte Buddy to allow mods to make patches inside the source code.
  * The class you assign as a mod patch acts as the advice class in Byte Buddy.
  * Use @ModMethodPatch to define which class and method to apply the patch to.
@@ -50,6 +53,7 @@ public class ExampleMethodPatch {
     @Advice.OnMethodEnter(skipOn = Advice.OnNonDefaultValue.class)
     static boolean onEnter(@Advice.This SurfaceGrassObject grassObject, @Advice.Argument(0) Level level) {
         // Debug message to know it's working
+        // You can of course call kotlin code here
         System.out.println("Entered SurfaceGrassObject.getLootTable(level, layerID, x, y): " + grassObject.getStringID() + " on level " + level.getIdentifier());
         // We return true to skip the original method's execution, since we override the returned loot table anyway.
         // This only happens if you add "skipOn = Advice.OnNonDefaultValue.class" in the OnMethodEnter annotation.
@@ -60,6 +64,7 @@ public class ExampleMethodPatch {
     @Advice.OnMethodExit
     static void onExit(@Advice.This SurfaceGrassObject grassObject, @Advice.Argument(0) Level level, @Advice.Return(readOnly = false) LootTable lootTable) {
         // Grass now drops between 1 and 2 coins instead
+        // You can of course call kotlin code here
         lootTable = new LootTable(LootItem.between("coin", 1, 2));
         // Debug message to know it's working
         System.out.println("Exited SurfaceGrassObject.getLootTable(level, layerID, x, y): " + grassObject.getStringID() + " on level " + level.getIdentifier() + " with new return value: " + lootTable);

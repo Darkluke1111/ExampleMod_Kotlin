@@ -5,28 +5,24 @@ import necesse.entity.mobs.buffs.BuffEventSubscriber;
 import necesse.entity.mobs.buffs.BuffModifiers;
 import necesse.entity.mobs.buffs.staticBuffs.Buff;
 
-public class ExampleBuff extends Buff {
+class ExampleBuff : Buff() {
 
-    public ExampleBuff() {
+    init {
         canCancel = true;
         isVisible = true;
         shouldSave = true;
     }
 
-
-    @Override
-    public void init(ActiveBuff activeBuff, BuffEventSubscriber buffEventSubscriber) {
+    override fun init(activeBuff: ActiveBuff, buffEventSubscriber: BuffEventSubscriber) {
         // Apply modifiers here
-        activeBuff.setModifier(BuffModifiers.SPEED, 0.5f); // +50% speed
+        activeBuff.setModifier(BuffModifiers.SPEED, 0.5f) // +50% speed
     }
 
-    @Override
-    public void serverTick(ActiveBuff buff) {
+    override fun serverTick(buff: ActiveBuff) {
         // You can do server ticks here
     }
 
-    @Override
-    public void clientTick(ActiveBuff buff) {
+    override fun clientTick(buff: ActiveBuff) {
         // You can do client ticks here, like adding particles to buff.owner
     }
 

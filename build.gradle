@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version "2.0.21"
 }
 
 // Change the values below this to your mods values
@@ -27,6 +28,11 @@ project.ext.clientside = false
 //project.ext.modDependencies = ["other.modid1", "other.modid2"]
 //project.ext.modOptionalDependencies = ["optional.modid1", "optional.modid2"]
 
+/**
+ * Kotlin Provider Mod provides the Kotlin StdLib. This mod is available on the Steam Workshop
+ */
+project.ext.modDependencies = ["kotlin-provider-mod"]
+
 // The path to the games install directory
 def gameDirectory = "C:/Program Files (x86)/Steam/steamapps/common/Necesse"
 
@@ -53,6 +59,8 @@ configurations {
 
 sourceSets.main.output.resourcesDir = file("build/mod/resources/")
 sourceSets.main.java.outputDir = file("build/mod/")
+// Don't forget to add the output directory for kotlin
+sourceSets.main.kotlin.outputDir = file("build/classes/kotlin/main/")
 sourceSets.main.compileClasspath += configurations.libDepends // Adds libDepends configuration to classpath
 def buildLocation = "build/jar/"
 
@@ -152,6 +160,8 @@ task buildModJar(type: Jar) {
 
     // Add mod output
     from sourceSets.main.java.outputDir
+    // Don't forget the kotlin output
+    from sourceSets.main.kotlin.outputDir
     // Add the dependencies
     from configurations.libDepends.collect { it.isDirectory() ? it : zipTree(it) }
 

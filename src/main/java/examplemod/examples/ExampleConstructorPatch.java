@@ -5,6 +5,9 @@ import necesse.entity.mobs.friendly.critters.RabbitMob;
 import net.bytebuddy.asm.Advice;
 
 /**
+ * Kotlin has some restrictions that make some features of bytebuddy not usable,
+ * so I usually make short patch classes in java
+ * <p>
  * Intercepts a constructor
  * Check out ExampleMethodPatch class for some documentation
  */
@@ -20,6 +23,7 @@ public class ExampleConstructorPatch {
     static void onExit(@Advice.This RabbitMob rabbitMob) {
         rabbitMob.setSpeed(60);
         // Debug message to know it's working
+        // You can of course call kotlin code here
         System.out.println("Exited RabbitMob constructor: " + rabbitMob.getStringID());
     }
 
