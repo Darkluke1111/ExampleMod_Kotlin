@@ -40,7 +40,7 @@ project.ext.clientside = false
 project.ext.modDependencies = ["kotlin-provider-mod"]
 
 // The path to the games install directory
-def gameDirectory = "C:/Program Files (x86)/Steam/steamapps/common/Necesse"
+def gameDirectory  = "$System.env.NECESSE"
 
 // =================================================
 // ========== DO NOT EDIT BELOW THIS LINE ==========
@@ -73,7 +73,7 @@ def buildLocation = "build/jar/"
 compileJava.options.encoding = "UTF-8"
 
 if (!file(gameDirectory + "/Necesse.jar").exists()) {
-    throw new Exception("Could not find game install directory. Make sure it is correct in build.gradle file.")
+    throw new Exception("Could not find game install directory. Make sure your NECESSE environment variable is set correctly to the directory that necesse.jar is in.")
 }
 
 dependencies {

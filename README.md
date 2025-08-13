@@ -8,4 +8,8 @@ There are two ways to make the kotlin stdLib accessible at runtime:
 
 The build.gradle file is currently set up to support the first variant, but you can switch by commenting out the mod dependency line and removing the comment around the line that adds the stdLib to libDepends 
 
+## Notes about specifying the game directory
+
+The original example mod template specifies the game directory directly in the build.gradle. I instead use an environment variable called NECESSE that should point to your Necesse installation directory. Make sure to set it correctly (and possibly restart the PC). This is to make development on different machines less annoying.
+
 Check out the [modding wiki page](https://necessewiki.com/Modding) for more.
