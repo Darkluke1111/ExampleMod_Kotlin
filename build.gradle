@@ -1,7 +1,11 @@
+
+
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version "2.0.21"
 }
+
+
 
 // Change the values below this to your mods values
 // To change the project name, edit the settings.gradle file
@@ -29,7 +33,9 @@ project.ext.clientside = false
 //project.ext.modOptionalDependencies = ["optional.modid1", "optional.modid2"]
 
 /**
- * Kotlin Provider Mod provides the Kotlin StdLib. This mod is available on the Steam Workshop
+ * Kotlin Provider Mod provides the Kotlin StdLib. This mod is available on the Steam Workshop. You need to use either
+ * this or add the kotlin stdLib to your libDependencies in the dependencies section to make sure you have access to the
+ * kotlin classes on the users PC
  */
 project.ext.modDependencies = ["kotlin-provider-mod"]
 
@@ -77,8 +83,14 @@ dependencies {
 
     // Add any third party library dependencies here. Remember to use libDepends, so that they will be added to your jar on build
     // These are some examples:
-//    libDepends group: 'com.google.guava', name: 'guava', version: '31.1-jre'
-//    libDepends files("path/to/library/jar.jar")
+    //    libDepends group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    //    libDepends files("path/to/library/jar.jar")
+
+    /**
+     * Adds the kotlin stdLib to your jar file. You need to use either
+     * this or add the Kotlin Provider Mod to your mod dependencies.
+     */
+    //libDepends "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
 }
 
 task createAppID {
@@ -151,6 +163,7 @@ task buildModJar(type: Jar) {
     group "necesse"
     description "Generates the mod jar into the build folder"
     dependsOn "classes"
+    //duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     doFirst {
         fileTree(dir: buildLocation).exclude("${jarName}.jar").visit { FileVisitDetails details ->
@@ -164,6 +177,9 @@ task buildModJar(type: Jar) {
     from sourceSets.main.kotlin.outputDir
     // Add the dependencies
     from configurations.libDepends.collect { it.isDirectory() ? it : zipTree(it) }
+    // kotlin std-lib comes with a module-info class inside META-INF which serves no purpuse in this case but to crash
+    // Necesse so we won't copy it
+    exclude 'META-INF/versions/9/module-info.class'
 
     archiveName "${jarName}.jar"
     destinationDir file(buildLocation)
